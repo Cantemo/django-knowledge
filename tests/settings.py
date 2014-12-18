@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'south',
     'django_coverage',
     'mock',
+    'ckeditor',
 )
 
 ROOT_URLCONF = 'tests.urls'

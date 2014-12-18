@@ -8,7 +8,7 @@ from django.conf import settings as django_settings
 from knowledge.managers import QuestionManager, ResponseManager
 from knowledge.signals import knowledge_post_save
 
-from mezzanine.core.fields import RichTextField
+from ckeditor.fields import RichTextField
 
 STATUSES = (
     ('public', _('Public')),
