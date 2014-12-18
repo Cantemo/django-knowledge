@@ -55,5 +55,5 @@ COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(DIRNAME, 'reports').replace('\\',
 TEMPLATE_DIRS = (
     os.path.join(DIRNAME, 'templates').replace('\\','/')
 )
-
+CKEDITOR_UPLOAD_PATH = 'upload/'
 LOGIN_REDIRECT_URL = '/admin/'
