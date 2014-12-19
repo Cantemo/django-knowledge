@@ -3,7 +3,7 @@ django-ckeditor-updated==4.4.4
 Markdown==2.1.1
 coverage==3.5.1
 django-coverage==1.2.2
-django-debug-toolbar==0.8.5
+django-debug-toolbar==1.2.2
 pep8==0.6.1
 pylint==0.25.1
 django-nose==1.3

@@ -1,1 +1,2 @@
-VERSION = (0, 2, 3)
+default_app_config = 'knowledge.apps.KnowledgeConfig'
+VERSION = (0, 3, 0)

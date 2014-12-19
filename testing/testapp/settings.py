@@ -38,22 +38,21 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'django.contrib.markup',
+    'django.contrib.staticfiles',
     'django_nose',
     'debug_toolbar',
     'knowledge',
-    'south',
     'django_coverage',
     'mock',
     'ckeditor',
 )
 
-ROOT_URLCONF = 'tests.urls'
+ROOT_URLCONF = 'testapp.urls'
 
 COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(DIRNAME, 'reports').replace('\\','/')
 
 TEMPLATE_DIRS = (
-    os.path.join(DIRNAME, 'templates').replace('\\','/')
+    os.path.join(DIRNAME, 'templates').replace('\\','/'),
 )
 CKEDITOR_UPLOAD_PATH = 'upload/'
 LOGIN_REDIRECT_URL = '/admin/'
