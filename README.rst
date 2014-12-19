@@ -11,12 +11,12 @@ to customize the look and feel of the app if you like.
 
 **django-knowledge** was developed internally for `Zapier <https://zapier.com/z/qO/>`_ 
 (see it live here `on our support page <https://zapier.com/z/3C/support/>`_). Or, check 
-out a `plain, live demo <http://django-knowledge.org/>`_. It has been forked by Cantemo mainly to bring it up to date with Django 1.7
+out a `plain, live demo <http://django-knowledge.org/>`_. It has been forked by Cantemo ( http://cantemo.com ) mainly to bring it up to date with Django 1.7
 
 This is a fork which adds RST support, and will use django-ckeditor-updated.
 
-Changes:
-------------
+Cantemo Changes:
+-----------------
 
 These are implemented:
 
@@ -43,13 +43,11 @@ At a glance:
 Links:
 ------
 
-* View a `live demo <http://django-knowledge.org/>`_. This is the included stock design.
-* Check out the `documentation <http://django-knowledge.readthedocs.org/>`_ at ReadTheDocs.
-* Visit our `GitHub repo <https://github.com/zapier/django-knowledge>`_ and join the development!
+* View a `live demo <http://django-knowledge.org/>`_. This is the included stock design, from the Zapier version.
 
 
-Screen Shots:
--------------
+Screen Shots of the Zapier version:
+------------------------------------
 
 .. image:: https://github.com/zapier/django-knowledge/raw/master/docs/images/thread.png
    :width: 100 %
