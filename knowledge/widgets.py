@@ -13,7 +13,6 @@ class CustomRelatedFieldWidgetWrapper(RelatedFieldWidgetWrapper):
     """
 
     def __init__(self, widget, add_url,permission=True):
-        self.is_hidden = widget.is_hidden
         self.needs_multipart_form = widget.needs_multipart_form
         self.attrs = widget.attrs
         self.choices = widget.choices
