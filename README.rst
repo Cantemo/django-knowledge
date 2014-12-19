@@ -1,6 +1,9 @@
 Welcome to django-knowledge!
 ============================
 
+.. image:: https://travis-ci.org/Cantemo/django-knowledge.svg?branch=master
+    :target: https://travis-ci.org/Cantemo/django-knowledge
+
 django-knowledge makes it easy to add an integrated support desk, help desk or 
 knowledge base to your Django project with only a few lines of boilerplate code.
 While we give you a generic design for free, you should just as easily be able 
@@ -10,6 +13,20 @@ to customize the look and feel of the app if you like.
 (see it live here `on our support page <https://zapier.com/z/3C/support/>`_). Or, check 
 out a `plain, live demo <http://django-knowledge.org/>`_.
 
+This is a fork which adds RST support, and will use django-ckeditor-updated.
+
+Changes:
+------------
+
+These are implemented:
+
+* Added django-ckeditor-updated
+
+These are todo:
+
+* Make Travis CI pass the tests.
+* Add support for Django 1.7 and later 1.8
+* Remove South.
 
 At a glance:
 ------------
