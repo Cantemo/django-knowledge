@@ -61,10 +61,13 @@ def QuestionForm(user, *args, **kwargs):
             #Not sure about 'category' or 'category_create'
             if 'categories' in self.fields:
 
+                """
+                I don't care for this widget at the moment
                 self.fields['categories'].widget = CustomRelatedFieldWidgetWrapper(
                                                     FilteredSelectMultiple(('category'),False,),
                                                     reverse('admin:knowledge_category_add'),
                                                     True)
+                """
 
                 self.fields['categories'].queryset = Category.objects.all()
 

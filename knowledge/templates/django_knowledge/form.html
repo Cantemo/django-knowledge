@@ -3,6 +3,7 @@
 
 <form {% if submit_url %}action="{{ submit_url }}"{% endif %} method="post" class="dk-form">
   {% csrf_token %}
+  {{ form.media }}
 
   {% for field in form.visible_fields %}
     <div class="field-wrapper field-{{ field.html_name }}">

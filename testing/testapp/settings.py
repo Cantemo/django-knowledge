@@ -17,6 +17,10 @@ DATABASES = {
 }
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(DIRNAME, 'static').replace('\\','/')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(DIRNAME, 'media').replace('\\','/')
 
 INTERNAL_IPS = ('127.0.0.1',)
 
@@ -54,7 +58,22 @@ COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(DIRNAME, 'reports').replace('\\',
 TEMPLATE_DIRS = (
     os.path.join(DIRNAME, 'templates').replace('\\','/'),
 )
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar_Full': [
+            ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+            ['Image', 'Table', 'HorizontalRule'],
+            ['Paragraph', 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ],
+            ['TextColor', 'BGColor'],
+            ['Smiley', 'SpecialChar'], ['Source'],
+        ], 
+    },
+}
+
+
 CKEDITOR_UPLOAD_PATH = 'upload/'
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'
 LOGIN_REDIRECT_URL = '/admin/'
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

@@ -22,8 +22,11 @@ These are implemented:
 
 * Added django-ckeditor-updated
 * Add support for Django 1.7 and later 1.8
-* Remove South.
+* Removed South.
 * Make Travis CI pass the tests.
+
+
+Don't forget to run ./manage.py collectstatic
 
 
 At a glance:
