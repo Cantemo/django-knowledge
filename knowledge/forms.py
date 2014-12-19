@@ -59,12 +59,14 @@ def QuestionForm(user, *args, **kwargs):
                     qf.required = False
             
             #Not sure about 'category' or 'category_create'
-            self.fields['categories'].widget = CustomRelatedFieldWidgetWrapper(
-                                                FilteredSelectMultiple(('category'),False,),
-                                                reverse('admin:knowledge_category_add'),
-                                                True)
+            if 'categories' in self.fields:
 
-            self.fields['categories'].queryset = Category.objects.all()
+                self.fields['categories'].widget = CustomRelatedFieldWidgetWrapper(
+                                                    FilteredSelectMultiple(('category'),False,),
+                                                    reverse('admin:knowledge_category_add'),
+                                                    True)
+
+                self.fields['categories'].queryset = Category.objects.all()
 
         # honey pot!
         phone_number = forms.CharField(required=False)

@@ -26,7 +26,7 @@
         &nbsp;{{ question.added }}
       </span></h5>
 
-      {{ question.body|richtext_filters|safe }}
+      {{ question.body|safe }}
 
       {% include "django_knowledge/mod_bar.html" with allowed_mods=allowed_mods.question type="question" node=question %}
     </div>
@@ -51,7 +51,7 @@
           &nbsp;{{ response.added }}
         </span></h5>
 
-        {{ response.body|richtext_filters|safe }}
+        {{ response.body|safe }}
 
         {% include "django_knowledge/mod_bar.html" with allowed_mods=allowed_mods.response type="response" node=response %}
       </div>

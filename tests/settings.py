@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.markup',
-
+    'django_nose',
     'debug_toolbar',
     'knowledge',
     'south',
@@ -57,3 +57,5 @@ TEMPLATE_DIRS = (
 )
 CKEDITOR_UPLOAD_PATH = 'upload/'
 LOGIN_REDIRECT_URL = '/admin/'
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

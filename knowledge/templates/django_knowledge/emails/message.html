@@ -12,7 +12,7 @@
         {% endblocktrans %}</p>
 
         <div style="background:#f3f3f3;margin:8px 0;padding:12px 18px">
-            {{ response.body|striptags|markdown }}
+            {{ response.body|striptags }}
         </div>
 
         <p>{% trans "You are receiving these messages because you checked the 'alert' box when you originally posted." %}</p>
@@ -24,7 +24,7 @@
         {% endblocktrans %}</p>
 
         <div style="background:#f3f3f3;margin:8px 0;padding:12px 18px">
-            {{ question.body|striptags|markdown }}
+            {{ question.body|striptags }}
         </div>
 
         <p>{% trans "You are receiving these messages because you are a staff member." %}</p>
