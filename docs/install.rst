@@ -7,6 +7,16 @@ Install
 
 
 .. _installation-pip:
+
+Installing the Django 1.7 version from Cantemo
+-----------------------------------------------
+
+The development is so far active on this:
+
+    pip -e git+https://github.com/Cantemo/django-knowledge.git@#egg=django-knowledge
+
+
+Otherwise install from the older Zapier releases:
  
 Using pip or easy_install
 -------------------------

@@ -9,10 +9,10 @@ setup(
     description = '''A simple frontend and admin interface for dealing with help
         knowledge tickets and issues, including public and private responses and searching.''',
     version = version,
-    author = 'Bryan Helmig',
-    author_email = 'bryan@zapier.com',
-    url = 'http://github.com/zapier/django-knowledge',
-    install_requires=['Markdown>=2.1.1','Django>=1.5', 'django-ckeditor-updated'],
+    author = 'Tim Child',
+    author_email = 'tim@cantemo.com',
+    url = 'http://github.com/Cantemo/django-knowledge',
+    install_requires=['Django>=1.7.0', 'django-ckeditor-updated==4.4.4'],
     packages=['knowledge'],
     package_data={'knowledge': [
       'migrations/*.py',
