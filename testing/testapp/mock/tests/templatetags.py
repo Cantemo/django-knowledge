@@ -1,6 +1,6 @@
 from django.test.client import RequestFactory
 
-from mock.tests.base import TestCase
+from .base import TestCase
 
 from knowledge.templatetags.knowledge_tags import get_gravatar, page_query
 

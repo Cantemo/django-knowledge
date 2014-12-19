@@ -2,8 +2,7 @@ from django.contrib.auth.models import User, AnonymousUser
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 
-from django.test import TestCase
-#from mock.tests.base import TestCase
+from .base import TestCase
 from knowledge.models import Question, Response
 from knowledge.forms import QuestionForm, ResponseForm
 

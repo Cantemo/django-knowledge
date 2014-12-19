@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.core import mail
 
-from mock.tests.base import TestCase
+from .base import TestCase
 from knowledge.models import Question, Response
 
 

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, AnonymousUser
 from django.core import mail
 
-from mock.tests.base import TestCase
+from .base import TestCase
 from knowledge.models import Question, Response
 from knowledge.forms import QuestionForm, ResponseForm
 from knowledge import settings
