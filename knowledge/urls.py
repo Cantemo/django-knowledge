@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url
 urlpatterns = patterns('knowledge.views',
     url(r'^$', 'knowledge_index', name='knowledge_index'),
 
+    url(r'^article_list/$', 'knowledge_list', name='knowledge_list'),
     url(r'^questions/$', 'knowledge_list', name='knowledge_list'),
 
     url(r'^questions/(?P<question_id>\d+)/$',
