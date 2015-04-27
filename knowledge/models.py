@@ -109,16 +109,19 @@ class KnowledgeBase(models.Model):
         if self.status == 'inherit' and self.is_response:
             return self.question.can_view(user)
 
-        if self.status == 'internal' and user.is_staff:
+        if self.status == 'review' and user.is_staff: 
             return True
 
-        if self.status == 'private':
+        if self.status == 'rejected' and user.is_staff: 
+            return True
+
+        if self.status == 'draft':
             if self.user == user or user.is_staff:
                 return True
-            if self.is_response and self.question.user == user:
+            if self.is_response and self.question.user == user: 
                 return True
 
-        if self.status == 'public':
+        if self.status == 'public': 
             return True
 
         return False
@@ -133,18 +136,21 @@ class KnowledgeBase(models.Model):
         self.switch('public', save)
     public.alters_data = True
 
-    def private(self, save=True):
-        self.switch('private', save)
-    private.alters_data = True
+    def draft(self, save=True):
+        self.switch('draft', save)
+    draft.alters_data = True
 
     def inherit(self, save=True):
         self.switch('inherit', save)
     inherit.alters_data = True
 
-    def internal(self, save=True):
-        self.switch('internal', save)
-    internal.alters_data = True
+    def review(self, save=True):
+        self.switch('review', save)
+    review.alters_data = True
 
+    def rejected(self, save=True):
+        self.switch('rejected', save)
+    rejected.alters_data = True
 
 class Question(KnowledgeBase):
     is_question = True
@@ -158,7 +164,7 @@ class Question(KnowledgeBase):
     status = models.CharField(
         verbose_name=_('Status'),
         max_length=32, choices=STATUSES,
-        default='private', db_index=True)
+        default='draft', db_index=True)
 
     locked = models.BooleanField(default=False)
 
@@ -190,7 +196,10 @@ class Question(KnowledgeBase):
     def inherit(self):
         pass
 
-    def internal(self):
+    def review(self):
+        pass
+
+    def rejected(self):
         pass
 
     def lock(self, save=True):
