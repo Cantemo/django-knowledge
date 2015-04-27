@@ -108,7 +108,7 @@ def knowledge_thread(request,
     try:
         question = Question.objects.can_view(request.user)\
                                    .get(id=question_id)
-        question.hits = question.hits+1
+        question.hits = question.hits + 1
         question.save()
     except Question.DoesNotExist:
         if Question.objects.filter(id=question_id).exists() and \
