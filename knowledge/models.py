@@ -12,8 +12,9 @@ from ckeditor.fields import RichTextField
 
 STATUSES = (
     ('public', _('Public')),
-    ('private', _('Private')),
-    ('internal', _('Internal')),
+    ('draft', _('Draft')),
+    ('review', _('Review')),
+    ('rejected', _('Rejected')),
 )
 
 
@@ -150,11 +151,9 @@ class Question(KnowledgeBase):
     _requesting_user = None
 
     title = models.CharField(max_length=255,
-        verbose_name=_('Question'),
-        help_text=_('Enter your question or suggestion.'))
+        verbose_name=_('Title'))
     body = RichTextField(blank=True, null=True,
-        verbose_name=_('Description'),
-        help_text=_('Please offer details.'))
+        verbose_name=_('Body'))
 
     status = models.CharField(
         verbose_name=_('Status'),
@@ -163,14 +162,18 @@ class Question(KnowledgeBase):
 
     locked = models.BooleanField(default=False)
 
+    recommended = models.BooleanField(default=False)
+
+    hits = models.PositiveIntegerField(default=0)
+
     categories = models.ManyToManyField('knowledge.Category', blank=True)
 
     objects = QuestionManager()
 
     class Meta:
         ordering = ['-added']
-        verbose_name = _('Question')
-        verbose_name_plural = _('Questions')
+        verbose_name = _('Article')
+        verbose_name_plural = _('Articles')
 
     def __unicode__(self):
         return self.title
