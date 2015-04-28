@@ -12,8 +12,9 @@ from ckeditor.fields import RichTextField
 
 STATUSES = (
     ('public', _('Public')),
-    ('private', _('Private')),
-    ('internal', _('Internal')),
+    ('draft', _('Draft')),
+    ('review', _('Review')),
+    ('rejected', _('Rejected')),
 )
 
 
@@ -108,16 +109,19 @@ class KnowledgeBase(models.Model):
         if self.status == 'inherit' and self.is_response:
             return self.question.can_view(user)
 
-        if self.status == 'internal' and user.is_staff:
+        if self.status == 'review' and user.is_staff: 
             return True
 
-        if self.status == 'private':
+        if self.status == 'rejected' and user.is_staff: 
+            return True
+
+        if self.status == 'draft':
             if self.user == user or user.is_staff:
                 return True
-            if self.is_response and self.question.user == user:
+            if self.is_response and self.question.user == user: 
                 return True
 
-        if self.status == 'public':
+        if self.status == 'public': 
             return True
 
         return False
@@ -132,36 +136,41 @@ class KnowledgeBase(models.Model):
         self.switch('public', save)
     public.alters_data = True
 
-    def private(self, save=True):
-        self.switch('private', save)
-    private.alters_data = True
+    def draft(self, save=True):
+        self.switch('draft', save)
+    draft.alters_data = True
 
     def inherit(self, save=True):
         self.switch('inherit', save)
     inherit.alters_data = True
 
-    def internal(self, save=True):
-        self.switch('internal', save)
-    internal.alters_data = True
+    def review(self, save=True):
+        self.switch('review', save)
+    review.alters_data = True
 
+    def rejected(self, save=True):
+        self.switch('rejected', save)
+    rejected.alters_data = True
 
 class Question(KnowledgeBase):
     is_question = True
     _requesting_user = None
 
     title = models.CharField(max_length=255,
-        verbose_name=_('Question'),
-        help_text=_('Enter your question or suggestion.'))
+        verbose_name=_('Title'))
     body = RichTextField(blank=True, null=True,
-        verbose_name=_('Description'),
-        help_text=_('Please offer details.'))
+        verbose_name=_('Body'))
 
     status = models.CharField(
         verbose_name=_('Status'),
         max_length=32, choices=STATUSES,
-        default='private', db_index=True)
+        default='draft', db_index=True)
 
     locked = models.BooleanField(default=False)
+
+    recommended = models.BooleanField(default=False)
+
+    hits = models.PositiveIntegerField(default=0)
 
     categories = models.ManyToManyField('knowledge.Category', blank=True)
 
@@ -169,8 +178,8 @@ class Question(KnowledgeBase):
 
     class Meta:
         ordering = ['-added']
-        verbose_name = _('Question')
-        verbose_name_plural = _('Questions')
+        verbose_name = _('Article')
+        verbose_name_plural = _('Articles')
 
     def __unicode__(self):
         return self.title
@@ -187,7 +196,10 @@ class Question(KnowledgeBase):
     def inherit(self):
         pass
 
-    def internal(self):
+    def review(self):
+        pass
+
+    def rejected(self):
         pass
 
     def lock(self, save=True):

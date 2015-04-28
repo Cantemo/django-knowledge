@@ -46,7 +46,7 @@ def QuestionForm(user, *args, **kwargs):
             qf = self.fields.get('status', None)
             if qf and not user.is_staff:
                 choices = list(qf.choices)
-                choices.remove(('internal', _('Internal')))
+                choices.remove(('draft', _('Draft')))
                 qf.choices = choices
 
             # a bit of a hack...
