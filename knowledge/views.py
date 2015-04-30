@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.db.models import Q
 
-from models import Question, Response, Category
+from models import Question, Response, Category, Company, Author
 from forms import QuestionForm, ResponseForm
 from utils import paginate
 
@@ -108,6 +108,7 @@ def knowledge_thread(request,
     try:
         question = Question.objects.can_view(request.user)\
                                    .get(id=question_id)
+		company = Company.objects.get(external_id=question.user)
         question.hits = question.hits + 1
         question.save()
     except Question.DoesNotExist:
@@ -134,6 +135,7 @@ def knowledge_thread(request,
     return render(request, template, {
         'request': request,
         'question': question,
+		'company': company,
         'my_questions': get_my_questions(request),
         'responses': responses,
         'allowed_mods': ALLOWED_MODS,

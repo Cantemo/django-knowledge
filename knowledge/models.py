@@ -4,11 +4,12 @@ import django
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings as django_settings
-
 from knowledge.managers import QuestionManager, ResponseManager
 from knowledge.signals import knowledge_post_save
-
 from ckeditor.fields import RichTextField
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.utils.encoding import force_unicode
 
 STATUSES = (
     ('public', _('Public')),
@@ -152,6 +153,56 @@ class KnowledgeBase(models.Model):
         self.switch('rejected', save)
     rejected.alters_data = True
 
+class Company(models.Model):
+    """ We could have multiple people per company I suppose, 
+        so Company could be what we show some information on?
+    """
+    name = models.CharField(max_length=255, blank=False)
+    external_id = models.ForeignKey('auth.User', default=False, related_name='user_company')
+    nickname = models.CharField(_('nickname'), max_length=50, blank=True, null=True)
+    about = models.TextField(_('about'), blank=True, null=True)
+    web_site = models.URLField(_('URL'))
+    location = models.CharField(max_length=255, blank=False)
+    date_added = models.DateTimeField(_('date added'), auto_now_add=True)
+    date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    avatar = models.ImageField(upload_to='uploads/avatars/', default ='uploads/avatars/default.jpg')
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name = _('company')
+        verbose_name_plural = _('companies')
+
+    def __unicode__(self):
+        return force_unicode(self.name)
+    
+    def get_admin_url(self):
+        return reverse('admin:%s_%s_change' %(self._meta.app_label, self._meta.module_name), args=[self.id])
+    
+    def get_name(self):
+        return force_unicode(self.name)
+
+class Author(models.Model):
+    """ Author extends User to give a little more information """
+    user = models.OneToOneField(User, related_name='user_author') 
+    company = models.ForeignKey(Company)
+    nickname = models.CharField(_('nickname'), max_length=50, blank=True, null=True)
+    suffix = models.CharField(_('suffix'), max_length=50, blank=True, null=True)
+    title = models.CharField(_('title'), max_length=200, blank=True)
+    about = models.TextField(_('about'), blank=True, null=True)
+    
+    class Meta:
+        ordering = ('nickname',)
+        verbose_name = _('Author')
+        verbose_name_plural = _('Author')    
+    
+    def __unicode__(self):
+        return force_unicode(self.fullname)
+        
+    @property
+    def fullname(self):
+        return u"%s %s" % (self.user.first_name, self.user.last_name)
+        
 class Question(KnowledgeBase):
     is_question = True
     _requesting_user = None
@@ -183,6 +234,12 @@ class Question(KnowledgeBase):
 
     def __unicode__(self):
         return self.title
+		
+    def get_company_logo(self):
+
+        company_instance = Company.objects.get(external_id=self.user)
+
+        return company_instance.avatar
 
     @models.permalink
     def get_absolute_url(self):
