@@ -236,8 +236,8 @@ class Question(KnowledgeBase):
         return self.title
 		
     def get_company_logo(self):
-
-        company_instance = Company.objects.get(external_id=self.user)
+        author = Author.objects.get(user=self.user)
+        company_instance = Company.objects.get(name=author.company)
 
         return company_instance.avatar
 

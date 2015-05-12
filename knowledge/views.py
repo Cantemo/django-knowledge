@@ -108,7 +108,14 @@ def knowledge_thread(request,
     try:
         question = Question.objects.can_view(request.user)\
                                    .get(id=question_id)
-		company = Company.objects.get(external_id=question.user)
+		author = ''
+        company= ''
+        try:
+            author = Author.objects.get(user=question.user)
+            company = Company.objects.get(name=author.company)
+        except:
+            pass
+            
         question.hits = question.hits + 1
         question.save()
     except Question.DoesNotExist:
