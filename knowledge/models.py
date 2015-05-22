@@ -160,7 +160,7 @@ class Company(models.Model):
     name = models.CharField(max_length=255, blank=False)
     external_id = models.ForeignKey('auth.User', default=False, related_name='user_company')
     nickname = models.CharField(_('nickname'), max_length=50, blank=True, null=True)
-    about = models.TextField(_('about'), blank=True, null=True)
+    about = RichTextField(_('about'), blank=True, null=True)
     web_site = models.URLField(_('URL'))
     location = models.CharField(max_length=255, blank=False)
     date_added = models.DateTimeField(_('date added'), auto_now_add=True)
@@ -236,8 +236,8 @@ class Question(KnowledgeBase):
         return self.title
 		
     def get_company_logo(self):
-
-        company_instance = Company.objects.get(external_id=self.user)
+        author = Author.objects.get(user=self.user)
+        company_instance = Company.objects.get(name=author.company)
 
         return company_instance.avatar
 
