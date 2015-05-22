@@ -109,7 +109,7 @@ def knowledge_thread(request,
         question = Question.objects.can_view(request.user)\
                                    .get(id=question_id)
                                    
-		author = ''
+        author = ''
         company= ''
         try:
             author = Author.objects.get(user=question.user)
