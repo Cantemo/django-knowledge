@@ -142,6 +142,7 @@ def knowledge_thread(request,
                                    
 		author_instance = ''
         company= ''
+        re_user = request.user
         try:
             author_instance = Author.objects.get(user=question.user)
             company = Company.objects.get(name=author_instance.company)
@@ -180,6 +181,7 @@ def knowledge_thread(request,
         'question': question,
 		'company': company,
         'author': author,
+        're_user': re_user,
         'author_instance': author_instance,
         'my_questions': get_my_questions(request),
         'responses': responses,
