@@ -1,8 +1,11 @@
-
 from django.contrib import admin
-
 from knowledge.models import Question, Response, Category
 from portalpractices.models import Company, Author
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.template.loader import get_template
+from django.template import Context
 
 def make_public(modeladmin, request, queryset):
     queryset.update(status='public')
@@ -10,6 +13,13 @@ make_public.short_description = "Mark selected articles public"
 
 def make_rejected(modeladmin, request, queryset):
     queryset.update(status='rejected')
+    for q in queryset:
+    	ctx = {
+        	'article': q.title,
+        	'email': q.email,
+    	}
+      	message = get_template('registration/article_rejected_template_email.html').render(Context(ctx))
+      	send_mail('Portalpractices: Article rejected', message, 'no-reply@cantemo.com', [q.email])
 make_rejected.short_description = "Mark selected articles rejected"
 
 def make_draft(modeladmin, request, queryset):
@@ -19,6 +29,17 @@ make_draft.short_description = "Mark selected articles draft"
 def make_review(modeladmin, request, queryset):
     queryset.update(status='review')
 make_review.short_description = "Mark selected articles review"
+
+def make_active(modeladmin, reqeust, queryset):
+    queryset.update(is_active=True)
+    for q in queryset:
+    	ctx = {
+      		'username': q.username,
+        	'email': q.email,
+    	}
+        message = get_template('registration/activate_user_template_email.html').render(Context(ctx))
+      	send_mail('Account activated', message, 'no-reply@cantemo.com', [q.email])
+make_active.short_description = "Mark selected users active"
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = [f.name for f in Category._meta.fields]
@@ -51,3 +72,9 @@ class ResponseAdmin(admin.ModelAdmin):
     list_select_related = True
     raw_id_fields = ['user', 'question']
 admin.site.register(Response, ResponseAdmin)
+
+UserAdmin.list_display = ('email', 'first_name', 'last_name', 'date_joined', 'is_active', 'is_staff', 'is_superuser')
+UserAdmin.actions = [make_active]
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)

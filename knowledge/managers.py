@@ -17,7 +17,7 @@ class QuestionManager(models.Manager):
             return qs.filter(status='public')
 
         return qs.filter(
-            Q(status='public') | Q(status='private', user=user)
+            Q(status='public') | Q(status='review', user=user) | Q(status='rejected', user=user) | Q(status='draft', user=user)
         )
 
 

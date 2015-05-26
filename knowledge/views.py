@@ -8,6 +8,7 @@ from django.db.models import Q
 from models import Question, Response, Category, Company, Author
 from forms import QuestionForm, ResponseForm
 from utils import paginate
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 ALLOWED_MODS = {
@@ -46,10 +47,26 @@ def knowledge_index(request,
                                 .prefetch_related('responses__question')[0:20]
     # this is for get_responses()
     [setattr(q, '_requesting_user', request.user) for q in questions]
+    author = ''
+    try:
+        author = Author.objects.get(user=request.user)
+    except:
+        pass
+
+    paginator = Paginator(questions, 5)
+    page = request.GET.get('page')
+    try:
+        articles = paginator.page(page)
+    except PageNotAnInteger:
+        articles = paginator.page(1)
+    except EmptyPage:
+        articles = paginator.page(paginator.num_pages)
 
     return render(request, template, {
         'request': request,
         'questions': questions,
+        'author': author,
+        'articles': articles,
         'my_questions': get_my_questions(request),
         'categories': Category.objects.all(),
         'BASE_TEMPLATE' : settings.BASE_TEMPLATE,
@@ -78,16 +95,30 @@ def knowledge_list(request,
         category = get_object_or_404(Category, slug=category_slug)
         questions = questions.filter(categories=category)
 
-    paginator, questions = paginate(questions,
-                                    50,
-                                    request.GET.get('page', '1'))
     # this is for get_responses()
     [setattr(q, '_requesting_user', request.user) for q in questions]
+
+    author = ''
+    try:
+        author = Author.objects.get(user=request.user)
+    except:
+        pass
+
+    paginator = Paginator(questions, 5)
+    page = request.GET.get('page')
+    try:
+        articles = paginator.page(page)
+    except PageNotAnInteger:
+        articles = paginator.page(1)
+    except EmptyPage:
+        articles = paginator.page(paginator.num_pages)
 
     return render(request, template, {
         'request': request,
         'search': search,
         'questions': questions,
+        'articles': articles,
+        'author': author,
         'my_questions': get_my_questions(request),
         'category': category,
         'categories': Category.objects.all(),
@@ -109,11 +140,11 @@ def knowledge_thread(request,
         question = Question.objects.can_view(request.user)\
                                    .get(id=question_id)
                                    
-		author = ''
+		author_instance = ''
         company= ''
         try:
-            author = Author.objects.get(user=question.user)
-            company = Company.objects.get(name=author.company)
+            author_instance = Author.objects.get(user=question.user)
+            company = Company.objects.get(name=author_instance.company)
         except:
             pass
             
@@ -139,11 +170,17 @@ def knowledge_thread(request,
             return redirect(question.get_absolute_url())
     else:
         form = Form(request.user, question)
-
+        author = ''
+        try:
+            author = Author.objects.get(user=request.user)
+        except:
+            pass
     return render(request, template, {
         'request': request,
         'question': question,
 		'company': company,
+        'author': author,
+        'author_instance': author_instance,
         'my_questions': get_my_questions(request),
         'responses': responses,
         'allowed_mods': ALLOWED_MODS,
