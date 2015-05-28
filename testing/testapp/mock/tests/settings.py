@@ -80,11 +80,10 @@ class BasicSettingsTest(TestCase):
         QUESTION_POST = {
             'title': 'This is a title friend!',
             'body': 'This is the body friend!',
-            'status': 'private'
+            'status': 'draft'
         }
-
         question = QuestionForm(self.joe, QUESTION_POST).save()
-        self.assertEquals(question.status, 'private')
+        self.assertEquals(question.status, 'draft')
 
         ############# flip setting ##############
         settings.AUTO_PUBLICIZE = not settings.AUTO_PUBLICIZE

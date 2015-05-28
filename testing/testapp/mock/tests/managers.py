@@ -9,7 +9,7 @@ R = Response.objects
 
 class BasicMangerTest(TestCase):
     def test_question_qs(self):
-        # the auto generated question tests are private by default
+        # the auto generated question tests are draft by default
         self.assertEquals(0, Q.can_view(self.anon).count())
         self.assertEquals(0, Q.can_view(self.bob).count())
 
@@ -42,7 +42,7 @@ class BasicMangerTest(TestCase):
         self.assertEquals(0, R.can_view(self.anon).count())
         self.assertEquals(0, R.can_view(self.bob).count())
 
-        self.assertEquals(1, R.can_view(self.joe).count())
+        self.assertEquals(0, R.can_view(self.joe).count())
         self.assertEquals(1, R.can_view(self.admin).count())
 
 
@@ -55,23 +55,3 @@ class BasicMangerTest(TestCase):
         self.assertEquals(1, R.can_view(self.joe).count())
         self.assertEquals(1, R.can_view(self.admin).count())
 
-
-        ## someone comes along and internalizes this response ##
-        self.response.internal()
-
-        # only admin can see
-        self.assertEquals(0, R.can_view(self.anon).count())
-        self.assertEquals(0, R.can_view(self.bob).count())
-        self.assertEquals(0, R.can_view(self.joe).count())
-
-        self.assertEquals(1, R.can_view(self.admin).count())
-
-
-        ## someone comes along and privatizes this response ##
-        self.response.private()
-        
-        self.assertEquals(0, R.can_view(self.anon).count())
-        self.assertEquals(0, R.can_view(self.bob).count())
-
-        self.assertEquals(1, R.can_view(self.joe).count())
-        self.assertEquals(1, R.can_view(self.admin).count())

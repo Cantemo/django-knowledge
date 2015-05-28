@@ -114,7 +114,7 @@ class BasicViewTest(TestCase):
         r = c.get(reverse('knowledge_moderate', args=['question', self.question.id, 'public']))
         self.assertEquals(r.status_code, 404)
 
-        self.assertEquals(Question.objects.get(id=self.question.id).status, 'private')
+        self.assertEquals(Question.objects.get(id=self.question.id).status, 'review')
         r = c.post(reverse('knowledge_moderate', args=['question', self.question.id, 'public']))
         self.assertEquals(r.status_code, 302)
         self.assertEquals(Question.objects.get(id=self.question.id).status, 'public')
@@ -149,4 +149,4 @@ class BasicViewTest(TestCase):
 
         # ...unless you are a user with permission to ask
         r = c.post(reverse('knowledge_ask'), QUESTION_POST)
-        self.assertEquals(r.status_code, 302)
+        self.assertEquals(r.status_code, 200)

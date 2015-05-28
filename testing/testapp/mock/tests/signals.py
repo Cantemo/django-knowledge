@@ -132,7 +132,7 @@ class BasicSignalTest(TestCase):
         QUESTION_POST = {
             'title': 'This is a title friend!',
             'body': 'This is the body friend!',
-            'status': 'private'
+            'status': 'draft'
         }
 
         question = QuestionForm(self.joe, QUESTION_POST).save()
@@ -147,7 +147,7 @@ class BasicSignalTest(TestCase):
         QUESTION_POST = {
             'title': 'This is a title friend!',
             'body': 'This is the body friend!',
-            'status': 'private'
+            'status': 'draft'
         }
 
         question = QuestionForm(self.admin, QUESTION_POST).save()

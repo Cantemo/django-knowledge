@@ -228,6 +228,10 @@ class Question(KnowledgeBase):
 
     objects = QuestionManager()
 
+    def private(self, save=True):
+        self.switch('draft', save)
+    private.alters_data = True
+
     class Meta:
         ordering = ['-added']
         verbose_name = _('Article')
