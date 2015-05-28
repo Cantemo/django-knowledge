@@ -185,11 +185,12 @@ class Company(models.Model):
 class Author(models.Model):
     """ Author extends User to give a little more information """
     user = models.OneToOneField(User, related_name='user_author') 
-    company = models.ForeignKey(Company)
+    company = models.ForeignKey(Company, null=True)
     nickname = models.CharField(_('nickname'), max_length=50, blank=True, null=True)
     suffix = models.CharField(_('suffix'), max_length=50, blank=True, null=True)
     title = models.CharField(_('title'), max_length=200, blank=True)
     about = models.TextField(_('about'), blank=True, null=True)
+    avatar = models.ImageField(upload_to='uploads/avatars-author/', default ='uploads/avatars-author/default.jpg')
     
     class Meta:
         ordering = ('nickname',)
@@ -215,7 +216,7 @@ class Question(KnowledgeBase):
     status = models.CharField(
         verbose_name=_('Status'),
         max_length=32, choices=STATUSES,
-        default='draft', db_index=True)
+        default='review', db_index=True)
 
     locked = models.BooleanField(default=False)
 
