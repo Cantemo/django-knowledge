@@ -11,9 +11,9 @@ to customize the look and feel of the app if you like.
 
 **django-knowledge** was developed internally for `Zapier <https://zapier.com/z/qO/>`_ 
 (see it live here `on our support page <https://zapier.com/z/3C/support/>`_). Or, check 
-out a `plain, live demo <http://django-knowledge.org/>`_. It has been forked by Cantemo ( http://cantemo.com ) mainly to bring it up to date with Django 1.7
+out a `plain, live demo <http://django-knowledge.org/>`_. It has been forked by Cantemo ( http://cantemo.com ) mainly to bring it up to date with Django 1.7 and then Django 1.8
 
-This is a fork which adds RST support, and will use django-ckeditor-updated.
+This is a fork which also adds RST support, and will use django-ckeditor-updated.
 
 Cantemo Changes:
 -----------------
@@ -21,7 +21,7 @@ Cantemo Changes:
 These are implemented:
 
 * Added django-ckeditor-updated
-* Add support for Django 1.7 and later 1.8
+* Add support for Django 1.8 (from version v0.4.0). 
 * Removed South.
 * Make Travis CI pass the tests.
 
@@ -34,7 +34,7 @@ At a glance:
 
 - Turn common questions or support requests into a **knowledge base**.
 - Control **who sees what** with simple per object view permissions: *public* (everyone), 
-  *private* (poster & staff), or *internal* (only staff).
+  *draft* (poster & staff)
 - Assign questions and answers to **categories** for easy sorting.
 - Staff get **moderation controls** or they can use the familiar *Django admin* to handle support requests.
 - Allow **anonymous questions**, or require a standard Django user account (the default).
