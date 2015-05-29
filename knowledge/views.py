@@ -45,6 +45,10 @@ def knowledge_index(request,
 
     questions = Question.objects.can_view(request.user)\
                                 .prefetch_related('responses__question')[0:20]
+
+    questions_pop = Question.objects.can_view(request.user)\
+                            .prefetch_related('responses__question')
+    questions_pop = questions_pop.order_by('-hits')
     # this is for get_responses()
     [setattr(q, '_requesting_user', request.user) for q in questions]
     author = ''
@@ -66,6 +70,7 @@ def knowledge_index(request,
         'request': request,
         'questions': questions,
         'author': author,
+        'questions_pop': questions_pop,
         'articles': articles,
         'my_questions': get_my_questions(request),
         'categories': Category.objects.all(),
@@ -97,7 +102,6 @@ def knowledge_list(request,
 
     # this is for get_responses()
     [setattr(q, '_requesting_user', request.user) for q in questions]
-
     author = ''
     try:
         author = Author.objects.get(user=request.user)
@@ -139,16 +143,13 @@ def knowledge_thread(request,
     try:
         question = Question.objects.can_view(request.user)\
                                    .get(id=question_id)
-                                   
-        author = ''
+        author_instance = ''
         company= ''
-        re_user = request.user
         try:
             author_instance = Author.objects.get(user=question.user)
             company = Company.objects.get(name=author_instance.company)
         except:
             pass
-            
         question.hits = question.hits + 1
         question.save()
     except Question.DoesNotExist:
@@ -176,13 +177,13 @@ def knowledge_thread(request,
             author = Author.objects.get(user=request.user)
         except:
             pass
+
     return render(request, template, {
         'request': request,
         'question': question,
-		'company': company,
+        'company': company,
         'author': author,
-        're_user': re_user,
-        'author_instance': author,
+        'author_instance': author_instance,
         'my_questions': get_my_questions(request),
         'responses': responses,
         'allowed_mods': ALLOWED_MODS,
