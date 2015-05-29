@@ -106,14 +106,13 @@ class KnowledgeBase(models.Model):
         Returns a boolean dictating if a User like instance can
         view the current Model instance.
         """
-
         if self.status == 'inherit' and self.is_response:
             return self.question.can_view(user)
 
-        if self.status == 'review' and user.is_staff: 
+        if self.status == 'rejected' and user.is_staff:
             return True
-
-        if self.status == 'rejected' and user.is_staff: 
+        
+        if self.status == 'review' and user.is_staff: 
             return True
 
         if self.status == 'draft':
@@ -195,7 +194,7 @@ class Author(models.Model):
     class Meta:
         ordering = ('nickname',)
         verbose_name = _('Author')
-        verbose_name_plural = _('Author')    
+        verbose_name_plural = _('Author') 
     
     def __unicode__(self):
         return force_unicode(self.fullname)
@@ -239,11 +238,10 @@ class Question(KnowledgeBase):
 
     def __unicode__(self):
         return self.title
-		
+        
     def get_company_logo(self):
         author = Author.objects.get(user=self.user)
         company_instance = Company.objects.get(name=author.company)
-
         return company_instance.avatar
 
     @models.permalink
