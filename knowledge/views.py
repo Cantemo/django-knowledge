@@ -49,6 +49,12 @@ def knowledge_index(request,
     questions_pop = Question.objects.can_view(request.user)\
                             .prefetch_related('responses__question')
     questions_pop = questions_pop.order_by('-hits')
+    questions_rec = None
+    if Question.objects.can_view(request.user) & Question.objects.filter(recommended=True):
+        questions_rec = Question.objects.filter(recommended=True)
+        questions_rec = questions_rec.order_by('-lastchanged')
+
+
     # this is for get_responses()
     [setattr(q, '_requesting_user', request.user) for q in questions]
     author = ''
@@ -70,6 +76,7 @@ def knowledge_index(request,
         'request': request,
         'questions': questions,
         'author': author,
+        'questions_rec': questions_rec,
         'questions_pop': questions_pop,
         'articles': articles,
         'my_questions': get_my_questions(request),
@@ -116,6 +123,7 @@ def knowledge_list(request,
         articles = paginator.page(1)
     except EmptyPage:
         articles = paginator.page(paginator.num_pages)
+
 
     return render(request, template, {
         'request': request,
