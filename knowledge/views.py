@@ -156,6 +156,7 @@ def knowledge_thread(request,
         else:
             raise Http404
 
+    author = ''
     responses = question.get_responses(request.user)
 
     if request.path != question.get_absolute_url():
@@ -169,7 +170,6 @@ def knowledge_thread(request,
             return redirect(question.get_absolute_url())
     else:
         form = Form(request.user, question)
-        author = ''
         try:
             author = Author.objects.get(user=request.user)
         except:
