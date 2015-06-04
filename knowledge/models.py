@@ -212,6 +212,9 @@ class Question(KnowledgeBase):
     body = RichTextField(blank=True, null=True,
         verbose_name=_('Body'))
 
+    comment = models.CharField(blank=True, null=True,
+        verbose_name=_('Comment'), max_length=455)
+
     status = models.CharField(
         verbose_name=_('Status'),
         max_length=32, choices=STATUSES,

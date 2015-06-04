@@ -18,6 +18,7 @@ def make_rejected(modeladmin, request, queryset):
         ctx = {
             'article': q.title,
             'email': q.email,
+            'comment': q.comment,
         }
         #message = 'Your article: '+q.title+' has been rejected, Visit Portalpractices for more information'
         message = get_template('registration/article_rejected_template_email.html').render(Context(ctx))

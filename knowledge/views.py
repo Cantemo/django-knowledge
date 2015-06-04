@@ -43,42 +43,32 @@ def knowledge_index(request,
     if settings.LOGIN_REQUIRED and not request.user.is_authenticated():
         return HttpResponseRedirect(settings.LOGIN_URL+"?next=%s" % request.path)
 
-    questions = Question.objects.can_view(request.user)\
+    articles = Question.objects.can_view(request.user)\
                                 .prefetch_related('responses__question')[0:20]
 
-    questions_pop = Question.objects.can_view(request.user)\
+    articles_pop = Question.objects.can_view(request.user)\
                             .prefetch_related('responses__question')
-    questions_pop = questions_pop.order_by('-hits')
-    questions_rec = None
+    articles_pop = articles_pop.order_by('-hits')
+ 
+    articles_rec = None
     if Question.objects.can_view(request.user) & Question.objects.filter(recommended=True):
-        questions_rec = Question.objects.filter(recommended=True)
-        questions_rec = questions_rec.order_by('-lastchanged')
-
+        articles_rec = Question.objects.filter(recommended=True)
+        articles_rec = articles_rec.order_by('-lastchanged')
 
     # this is for get_responses()
-    [setattr(q, '_requesting_user', request.user) for q in questions]
+    [setattr(q, '_requesting_user', request.user) for q in articles]
     author = ''
     try:
         author = Author.objects.get(user=request.user)
     except:
         pass
 
-    paginator = Paginator(questions, 5)
-    page = request.GET.get('page')
-    try:
-        articles = paginator.page(page)
-    except PageNotAnInteger:
-        articles = paginator.page(1)
-    except EmptyPage:
-        articles = paginator.page(paginator.num_pages)
-
     return render(request, template, {
         'request': request,
-        'questions': questions,
-        'author': author,
-        'questions_rec': questions_rec,
-        'questions_pop': questions_pop,
         'articles': articles,
+        'author': author,
+        'articles_rec': articles_rec,
+        'articles_pop': articles_pop,
         'my_questions': get_my_questions(request),
         'categories': Category.objects.all(),
         'BASE_TEMPLATE' : settings.BASE_TEMPLATE,
@@ -123,7 +113,6 @@ def knowledge_list(request,
         articles = paginator.page(1)
     except EmptyPage:
         articles = paginator.page(paginator.num_pages)
-
 
     return render(request, template, {
         'request': request,
@@ -172,7 +161,6 @@ def knowledge_thread(request,
     if request.path != question.get_absolute_url():
         return redirect(question.get_absolute_url(), permanent=True)
 
-    author = ''
     if request.method == 'POST':
         form = Form(request.user, question, request.POST)
         if form and form.is_valid():
@@ -181,6 +169,7 @@ def knowledge_thread(request,
             return redirect(question.get_absolute_url())
     else:
         form = Form(request.user, question)
+        author = ''
         try:
             author = Author.objects.get(user=request.user)
         except:
