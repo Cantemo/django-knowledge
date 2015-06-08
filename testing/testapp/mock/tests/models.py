@@ -256,7 +256,7 @@ class BasicModelTest(TestCase):
 
     def test_url(self):
         self.assertEquals(
-            '/knowledge/questions/{0}/{1}/'.format(
+            '/knowledge/articles/{0}/{1}/'.format(
                 self.question.id,
                 slugify(self.question.title)),
             self.question.get_absolute_url()
