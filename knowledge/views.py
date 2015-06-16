@@ -54,7 +54,7 @@ def knowledge_index(request,
     if Question.objects.can_view(request.user) & Question.objects.filter(recommended=True):
         articles_rec = Question.objects.filter(recommended=True)
         articles_rec = articles_rec.order_by('-lastchanged')
-
+   
     # this is for get_responses()
     [setattr(q, '_requesting_user', request.user) for q in articles]
     author = ''
