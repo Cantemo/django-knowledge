@@ -185,14 +185,12 @@ class Author(models.Model):
     """ Author extends User to give a little more information """
     user = models.OneToOneField(User, related_name='user_author') 
     company = models.ForeignKey(Company, null=True)
-    nickname = models.CharField(_('nickname'), max_length=50, blank=True, null=True)
-    suffix = models.CharField(_('suffix'), max_length=50, blank=True, null=True)
     title = models.CharField(_('title'), max_length=200, blank=True)
     about = models.TextField(_('about'), blank=True, null=True)
     avatar = models.ImageField(upload_to='uploads/avatars-author/', default ='uploads/avatars-author/default.jpg')
     
     class Meta:
-        ordering = ('nickname',)
+        ordering = ('user',)
         verbose_name = _('Author')
         verbose_name_plural = _('Author') 
     
@@ -323,6 +321,18 @@ class Question(KnowledgeBase):
     @property
     def url(self):
         return self.get_absolute_url()
+
+    def get_question_company(self):
+        author_instance = Author.objects.get(user=self.user)
+        return author_instance.company
+
+    def get_question_first_name(self):
+        user_instance = User.objects.get(username=self.user)
+        return user_instance.first_name
+
+    def get_question_last_name(self):
+        user_instance = User.objects.get(username=self.user)
+        return user_instance.last_name
 
 
 class Response(KnowledgeBase):
