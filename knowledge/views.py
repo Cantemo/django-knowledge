@@ -148,7 +148,7 @@ def knowledge_thread(request,
         except:
             pass
         question.hits = question.hits + 1
-        question.save()
+        question.save(update_fields=['hits'])
     except Question.DoesNotExist:
         if Question.objects.filter(id=question_id).exists() and \
                                 hasattr(settings, 'LOGIN_REDIRECT_URL'):

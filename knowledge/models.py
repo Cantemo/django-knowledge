@@ -157,7 +157,7 @@ class Company(models.Model):
         so Company could be what we show some information on?
     """
     name = models.CharField(max_length=255, blank=False)
-    external_id = models.ForeignKey('auth.User', default=False, related_name='user_company')
+    external_id = models.ForeignKey('auth.User', default=False, related_name='user_company', help_text=_('ID of the user that will own the company.'))
     nickname = models.CharField(_('nickname'), max_length=50, blank=True, null=True)
     about = RichTextField(_('about'), blank=True, null=True)
     web_site = models.URLField(_('URL'))
