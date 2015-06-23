@@ -42,6 +42,18 @@ def make_active(modeladmin, reqeust, queryset):
         send_mail('Portalpractices: Account activated', message, 'no-reply@cantemo.com', [q.email])
 make_active.short_description = "Mark selected users active"
 
+def make_author_active(modeladmin, reqeust, queryset):
+    for query in queryset:
+        query.user.is_active=True
+        query.user.save(update_fields=['is_active'])
+        ctx = {
+            'username': query.user.username,
+            'email': query.user.email,
+        }
+        message = get_template('registration/activate_user_template_email.html').render(Context(ctx))
+        send_mail('Portalpractices: Account activated', message, 'no-reply@cantemo.com', [query.user.email])
+make_active.short_description = "Mark selected users active"
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = [f.name for f in Category._meta.fields]
     prepopulated_fields = {'slug': ('title', )}
@@ -79,6 +91,7 @@ class AuthorAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'company', 'title', 'about', 'avatar', 'user_first_name', 'user_last_name', 'user_email','user_active' )
     list_select_related = True
     raw_id_fields = ['company']
+    actions = [make_author_active]
 admin.site.register(Author, AuthorAdmin)
 
 UserAdmin.list_display = ('email', 'first_name', 'last_name', 'date_joined', 'is_active', 'is_staff', 'is_superuser')
