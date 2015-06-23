@@ -40,8 +40,7 @@ def make_active(modeladmin, reqeust, queryset):
             'username': q.username,
             'email': q.email,
         }
-        message = 'Your account '+q.username+' has been activated'
-        #message = get_template('registration/activate_user_template_email.html').render(Context(ctx))
+        message = get_template('registration/activate_user_template_email.html').render(Context(ctx))
         send_mail('Portalpractices: Account activated', message, 'no-reply@cantemo.com', [q.email])
 make_active.short_description = "Mark selected users active"
 
