@@ -4,9 +4,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.template import Context
-
 from knowledge.models import Question, Response, Category, Company, Author
-
 
 def make_public(modeladmin, request, queryset):
     queryset.update(status='public')
@@ -64,16 +62,23 @@ class ResponseAdmin(admin.ModelAdmin):
 admin.site.register(Response, ResponseAdmin)
 
 class CompanyAdmin(admin.ModelAdmin):
- list_display = [f.name for f in Company._meta.fields]
- list_select_related = True
- raw_id_fields = ['external_id']
+    list_display = [f.name for f in Company._meta.fields]
+    list_select_related = True
+    raw_id_fields = ['external_id']
 admin.site.register(Company, CompanyAdmin)
 
 class AuthorAdmin(admin.ModelAdmin):
- list_display = [f.name for f in Author._meta.fields]
- list_select_related = True
- raw_id_fields = ['company']
-
+    def user_email(self, instance):
+        return instance.user.email
+    def user_first_name(self, instance):
+        return instance.user.first_name
+    def user_last_name(self, instance):
+        return instance.user.first_name
+    def user_active(self, instance):
+        return instance.user.is_active
+    list_display = ('id', 'user', 'company', 'title', 'about', 'avatar', 'user_first_name', 'user_last_name', 'user_email','user_active' )
+    list_select_related = True
+    raw_id_fields = ['company']
 admin.site.register(Author, AuthorAdmin)
 
 UserAdmin.list_display = ('email', 'first_name', 'last_name', 'date_joined', 'is_active', 'is_staff', 'is_superuser')
