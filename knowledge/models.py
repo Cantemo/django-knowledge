@@ -227,7 +227,7 @@ class Question(KnowledgeBase):
 
     categories = models.ManyToManyField('knowledge.Category', blank=True)
 
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     objects = QuestionManager()
 
