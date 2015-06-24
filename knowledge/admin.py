@@ -60,7 +60,7 @@ class CategoryAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = [f.name for f in Question._meta.fields]
+    list_display = ('id', 'added', 'lastchanged', 'user', 'alert', 'name', 'email', 'title', 'comment', 'status', 'locked', 'recommended', 'hits'  )
     list_select_related = True
     list_filter = ['status']
     raw_id_fields = ['user']
