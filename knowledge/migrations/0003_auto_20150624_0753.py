@@ -3,11 +3,13 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 from django.conf import settings
+import taggit.managers
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('taggit', '0001_initial'),
         ('knowledge', '0002_auto_20150608_1328'),
     ]
 
@@ -15,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='question',
             name='tags',
-            field=models.ManyToManyField(to='knowledge.Question', blank=True),
+            field=taggit.managers.TaggableManager(to='taggit.Tag', through='taggit.TaggedItem', help_text='A comma-separated list of tags.', verbose_name='Tags'),
         ),
         migrations.AlterField(
             model_name='company',
