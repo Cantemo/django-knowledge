@@ -10,6 +10,7 @@ from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils.encoding import force_unicode
+from taggit.managers import TaggableManager
 
 STATUSES = (
     ('public', _('Public')),
@@ -225,6 +226,8 @@ class Question(KnowledgeBase):
     hits = models.PositiveIntegerField(default=0)
 
     categories = models.ManyToManyField('knowledge.Category', blank=True)
+
+    tags = TaggableManager(blank=True)
 
     objects = QuestionManager()
 
