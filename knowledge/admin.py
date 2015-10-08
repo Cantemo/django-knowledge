@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -79,24 +81,27 @@ class CompanyAdmin(admin.ModelAdmin):
     raw_id_fields = ['external_id']
 admin.site.register(Company, CompanyAdmin)
 
-class AuthorAdmin(admin.ModelAdmin):
-    def user_email(self, instance):
-        return instance.user.email
-    def user_first_name(self, instance):
-        return instance.user.first_name
-    def user_last_name(self, instance):
-        return instance.user.first_name
-    def user_active(self, instance):
-        return instance.user.is_active
-    list_display = ('id', 'user', 'company', 'title', 'about', 'avatar', 'user_first_name', 'user_last_name', 'user_email','user_active' )
-    list_select_related = True
-    raw_id_fields = ['company']
-    actions = [make_author_active]
-admin.site.register(Author, AuthorAdmin)
+class AuthorAdmin(admin.TabularInline):
+    model = Author
+#admin.site.register(Author, AuthorAdmin)
 
-UserAdmin.list_display = ('email', 'first_name', 'last_name', 'date_joined', 'is_active', 'is_staff', 'is_superuser')
-UserAdmin.actions = [make_active]
+@receiver(pre_save, sender=User)
+def send_user_email(sender, instance=None, **kwargs):
+    old_instance = User.objects.get(pk=instance.pk)
+    if old_instance.is_active == False and instance.is_active == True:
+        ctx = {
+            'username': instance.username,
+            'email': instance.email,
+        }
+        message = get_template('registration/activate_user_template_email.html').render(Context(ctx))
+        send_mail('Portalpractices: Account activated', message, 'no-reply@cantemo.com', [instance.email])
 
+pre_save.connect(send_user_email, sender=User)
 
+class UserAdmin(admin.ModelAdmin):
+    inlines = [AuthorAdmin]
+    actions = [make_active]
+    list_filter = ['is_active']
+    list_display = ('email', 'first_name', 'last_name', 'date_joined', 'is_active', 'is_staff', 'is_superuser')
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
