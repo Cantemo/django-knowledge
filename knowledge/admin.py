@@ -87,16 +87,20 @@ class AuthorAdmin(admin.TabularInline):
 
 @receiver(pre_save, sender=User)
 def send_user_email(sender, instance=None, **kwargs):
-    old_instance = User.objects.get(pk=instance.pk)
-    if old_instance.is_active == False and instance.is_active == True:
-        ctx = {
-            'username': instance.username,
-            'email': instance.email,
-        }
-        message = get_template('registration/activate_user_template_email.html').render(Context(ctx))
-        send_mail('Portalpractices: Account activated', message, 'no-reply@cantemo.com', [instance.email])
+    try:
+        old_instance = None
+        old_instance = User.objects.get(pk=instance.pk)
+        if old_instance.is_active == False and instance.is_active == True:
+            ctx = {
+                'username': instance.username,
+                'email': instance.email,
+            }
+            message = get_template('registration/activate_user_template_email.html').render(Context(ctx))
+            send_mail('Portalpractices: Account activated', message, 'no-reply@cantemo.com', [instance.email])
+    except:
+        pass
 
-pre_save.connect(send_user_email, sender=User)
+pre_save.connect(send_user_email, sender=User, weak=False)
 
 class UserAdmin(admin.ModelAdmin):
     inlines = [AuthorAdmin]
