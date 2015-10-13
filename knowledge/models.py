@@ -222,6 +222,8 @@ class Question(KnowledgeBase):
         max_length=32, choices=STATUSES,
         default='review', db_index=True)
 
+    picture = models.ImageField(upload_to='uploads/article-picture/', default ='uploads/article-picture/default.jpg')
+
     locked = models.BooleanField(default=False)
 
     recommended = models.BooleanField(default=False)
